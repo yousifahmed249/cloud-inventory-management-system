@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Inventory Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>Cloud Inventory Management System</h1>
+
+    <div>
+        <input type="text" id="productName" placeholder="Product Name">
+
+        <input type="number" id="quantity" placeholder="Quantity">
+
+        <input type="number" id="price" placeholder="Price">
+
+       <button onclick="addProduct()">Add Product</button>
+    </div>
+
+    <h2>Inventory</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Stock Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="productTable">
+        </tbody>
+    </table>
+<script src="script.js"></script>
+</body>
+</html>
