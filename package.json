@@ -1,0 +1,21 @@
+{
+  "name": "cloud-inventory-management-system",
+  "version": "1.0.0",
+  "description": "Inventory management system with a persistent Node.js backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:init": "node scripts/init-postgres.js",
+    "start:prod": "NODE_ENV=production node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.23.1",
+    "sqlite3": "^6.0.1"
+  }
+}

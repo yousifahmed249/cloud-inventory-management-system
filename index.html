@@ -8,35 +8,159 @@
 </head>
 
 <body>
-
-    <h1>Cloud Inventory Management System</h1>
-
-    <div>
-        <input type="text" id="productName" placeholder="Product Name">
-
-        <input type="number" id="quantity" placeholder="Quantity">
-
-        <input type="number" id="price" placeholder="Price">
-
-       <button onclick="addProduct()">Add Product</button>
+    <div id="authScreen" class="auth-screen">
+        <div class="auth-card">
+            <h2>Inventory Login</h2>
+            <p class="auth-subtitle">Use your account to access inventory management.</p>
+            <form id="authForm">
+                <input type="email" id="authEmail" placeholder="Email address" required>
+                <input type="password" id="authPassword" placeholder="Password" required>
+                <button id="authSubmitButton" type="submit">Login</button>
+                <button id="toggleAuthMode" class="secondary" type="button">Create Account</button>
+            </form>
+            <p id="authMessage" class="auth-message"></p>
+            <div class="demo-credentials">
+                <strong>Demo account:</strong> admin@inventory.local / admin123
+            </div>
+        </div>
     </div>
 
-    <h2>Inventory</h2>
+    <div id="appShell" class="container hidden">
+        <div class="topbar">
+            <h1>Cloud Inventory Management System</h1>
+            <button id="logoutButton" class="secondary" type="button">Logout</button>
+        </div>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Stock Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+        <div class="panel">
+            <div class="form-grid">
+                <input type="text" id="productName" placeholder="Product Name">
+                <input type="text" id="category" placeholder="Category">
+                <input type="text" id="supplier" placeholder="Supplier">
+                <input type="number" id="lowStockAlert" placeholder="Low Stock Alert" min="0" step="1" value="5">
+                <input type="number" id="quantity" placeholder="Quantity" min="0" step="1">
+                <input type="number" id="price" placeholder="Price" min="0" step="0.01">
+                <button id="submitButton" type="button">Add Product</button>
+                <button id="cancelEditButton" class="secondary hidden" type="button">Cancel Edit</button>
+            </div>
+        </div>
 
-        <tbody id="productTable">
-        </tbody>
-    </table>
-<script src="script.js"></script>
+        <div class="summary">
+            <div class="summary-card">
+                <span>Total Products</span>
+                <strong id="totalProducts">0</strong>
+            </div>
+            <div class="summary-card warning">
+                <span>Low Stock Alerts</span>
+                <strong id="lowStockCount">0</strong>
+            </div>
+            <div class="summary-card success">
+                <span>Total Inventory Value</span>
+                <strong id="inventoryValue">$0.00</strong>
+            </div>
+            <div class="summary-card info">
+                <span>Total Revenue</span>
+                <strong id="totalRevenue">$0.00</strong>
+            </div>
+        </div>
+
+        <div class="panel invoice-panel">
+            <h2>New Invoice</h2>
+            <div class="invoice-form">
+                <select id="invoiceCustomerSelect">
+                    <option value="">Select customer</option>
+                </select>
+                <select id="invoiceProductSelect">
+                    <option value="">Select product</option>
+                </select>
+                <input type="number" id="invoiceQuantity" placeholder="Quantity" min="1" step="1" value="1">
+                <button id="createInvoiceButton" type="button">Create Invoice</button>
+            </div>
+            <div id="invoiceSummary" class="invoice-summary">Select a product to see the total value.</div>
+            <ul id="invoiceList" class="metadata-list"></ul>
+        </div>
+
+        <div class="report-grid">
+            <div class="panel compact-panel">
+                <h2>Sales Report</h2>
+                <ul id="reportList" class="report-list"></ul>
+            </div>
+        </div>
+
+        <div class="management-grid">
+            <div class="panel compact-panel">
+                <h2>Suppliers</h2>
+                <div class="mini-form">
+                    <input type="text" id="supplierNameInput" placeholder="Supplier name">
+                    <input type="text" id="supplierPhoneInput" placeholder="Phone">
+                    <button id="addSupplierButton" type="button">Add Supplier</button>
+                </div>
+                <ul id="supplierList" class="metadata-list"></ul>
+            </div>
+
+            <div class="panel compact-panel">
+                <h2>Customers</h2>
+                <div class="mini-form">
+                    <input type="text" id="customerNameInput" placeholder="Customer name">
+                    <input type="text" id="customerPhoneInput" placeholder="Phone">
+                    <button id="addCustomerButton" type="button">Add Customer</button>
+                </div>
+                <ul id="customerList" class="metadata-list"></ul>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <input type="search" id="searchInput" placeholder="Search products...">
+            <select id="statusFilter">
+                <option value="all">All Stock Status</option>
+                <option value="Out of Stock">Out of Stock</option>
+                <option value="Low Stock">Low Stock</option>
+                <option value="Stock Available">Stock Available</option>
+            </select>
+            <select id="categoryFilter">
+                <option value="all">All Categories</option>
+            </select>
+            <select id="sortBy">
+                <option value="name-asc">Sort: Name A-Z</option>
+                <option value="name-desc">Sort: Name Z-A</option>
+                <option value="quantity-desc">Sort: Quantity High-Low</option>
+                <option value="quantity-asc">Sort: Quantity Low-High</option>
+                <option value="price-desc">Sort: Price High-Low</option>
+                <option value="price-asc">Sort: Price Low-High</option>
+            </select>
+            <button id="exportButton" class="secondary" type="button">Export CSV</button>
+            <button id="clearAllButton" class="danger" type="button">Clear All</button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Supplier</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Value</th>
+                        <th>Stock Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="productTable"></tbody>
+            </table>
+        </div>
+
+        <div class="activity-panel">
+            <h2>Recent Activity</h2>
+            <ul id="activityList" class="activity-list"></ul>
+        </div>
+
+        <div class="activity-panel">
+            <h2>Transaction History</h2>
+            <ul id="transactionList" class="activity-list"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
